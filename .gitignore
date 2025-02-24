@@ -1,3 +1,5 @@
 bin/Main.class
 .vscode/settings.json
 bin/Evento.class
+bin/Concerto.class
+bin/MainProva.class

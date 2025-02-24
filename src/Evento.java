@@ -1,20 +1,24 @@
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Evento {
 
     private String titoloEvento;
     private LocalDate dataEvento;
-    private int numeroPostiTotali;
+    private final int numeroPostiTotali;
     private int numeroPostiRiservati;
 
     private static LocalDate now = LocalDate.now();
 
     public Evento(String titolo, LocalDate data, int numeroPostiTotali) {
+        numeroPostiRiservati = 0;
         this.titoloEvento = titolo;
         setData(data);
-        setNumeroPostiTotali(numeroPostiTotali);
-        numeroPostiRiservati = 0;
+        if (numeroPostiTotali <= 0) {
+            throw new IllegalArgumentException("Il numero di posti totali non può essere negativo!");
+        }
+        this.numeroPostiTotali = numeroPostiTotali;
     }
 
     public void setTitolo(String titolo) {
@@ -29,20 +33,17 @@ public class Evento {
         }
     }
 
-    private void setNumeroPostiTotali(int numeroPostiTotali) throws IllegalArgumentException {
-        if (numeroPostiTotali < 1) {
-            throw new IllegalArgumentException("Il numero di posti totali dell'evento non può essere negativo!");
-        }
-        
-        this.numeroPostiTotali = numeroPostiTotali;
-    }
-
     public String getTitolo() {
         return titoloEvento;
     }
 
     public LocalDate getData() {
         return dataEvento;
+    }
+
+    private String getDataFormattata() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MMM/yyyy");
+        return dataEvento.format(formatter);
     }
 
     public int getNumeroPostiTotali() {
@@ -53,7 +54,17 @@ public class Evento {
         return numeroPostiRiservati;
     }
 
-    public void prenota(int numeroPrenotazioni) throws Exception {
+    public void prenota() throws Exception {
+        if (dataEvento.isBefore(now)) {
+            throw new Exception("L'evento è già passato!");
+        } else if (numeroPostiRiservati == numeroPostiTotali) {
+            throw new Exception("L'evento è sold out!");
+        } 
+
+        numeroPostiRiservati++;
+    }
+
+    public void prenotaPosti(int numeroPrenotazioni) throws Exception {
         if (dataEvento.isBefore(now)) {
             throw new Exception("L'evento è già passato!");
         } else if (numeroPostiRiservati == numeroPostiTotali) {
@@ -63,7 +74,17 @@ public class Evento {
         numeroPostiRiservati += numeroPrenotazioni;
     }
 
-    public void disdici(int numeroDisdette) throws Exception {
+    public void disdici() throws Exception {
+        if (dataEvento.isBefore(now)) {
+            throw new Exception("L'evento è già passato!");
+        } else if (numeroPostiRiservati == 0) {
+            throw new Exception("Non ci sono posti riservati!");
+        }
+
+        numeroPostiRiservati--;
+    }
+
+    public void disdiciPosti(int numeroDisdette) throws Exception {
         if (dataEvento.isBefore(now)) {
             throw new Exception("L'evento è già passato!");
         } else if (numeroPostiRiservati == 0) {
@@ -79,7 +100,7 @@ public class Evento {
 
     @Override
     public String toString() {
-        return dataEvento + " - " + titoloEvento;
+        return getDataFormattata() + " - " + titoloEvento;
     }
 
 }
