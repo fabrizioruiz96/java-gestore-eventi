@@ -11,12 +11,13 @@ public class Evento {
 
     private static LocalDate now = LocalDate.now();
 
-    public Evento(String titolo, LocalDate data, int numeroPostiTotali) {
+    public Evento(String titolo, LocalDate data, int numeroPostiTotali) throws IllegalArgumentException {
         numeroPostiRiservati = 0;
         this.titoloEvento = titolo;
         setData(data);
+
         if (numeroPostiTotali <= 0) {
-            throw new IllegalArgumentException("Il numero di posti totali non può essere negativo!");
+            throw new IllegalArgumentException("Il numero di posti non può essere negativo!");
         }
         this.numeroPostiTotali = numeroPostiTotali;
     }

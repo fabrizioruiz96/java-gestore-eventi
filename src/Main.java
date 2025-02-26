@@ -5,75 +5,126 @@ import java.util.Scanner;
 
 public class Main {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
 
         Scanner scan = new Scanner(System.in);
+        Evento nuovoEvento = null;
 
-        System.out.print("Inserisci il titolo dell'evento da creare: ");
-        String titolo = scan.nextLine();
+        while (true) {
+            System.out.println("\n*** GESTORE EVENTI ***");
+            System.out.println("1. Crea un nuovo evento");
+            System.out.println("2. Prenota un posto");
+            System.out.println("3. Disdici un posto");
+            System.out.println("4. Mostra dettagli dell'evento");
+            System.out.println("0. Esci");
 
-        System.out.println("Inserisci la data e l'orario");
-        System.out.print("Giorno: ");
-        int giorno = scan.nextInt();
+            System.out.print("\nScegli un'opzione: ");
+            int scelta = scan.nextInt();
 
-        System.out.print("Mese(numero): ");
-        int mese = scan.nextInt();
+            switch (scelta) {
+                case 1:
+                    try {
 
-        System.out.print("Anno: ");
-        int anno = scan.nextInt();
+                        System.out.println("\nCREA UN NUOVO EVENTO!");
+                        System.out.print("Inserisci il titolo dell'evento: ");
+                        String titoloEvento = scan.next();
 
-        LocalDate data = LocalDate.of(anno, mese, giorno);
+                        System.out.print("Inserisci la data (yyyy-MM-dd): ");
+                        String dataEvento = scan.next();
+                        LocalDate parsedDataEvento = LocalDate.parse(dataEvento);
 
-        System.out.print("Ore: ");
-        int ore = scan.nextInt();
+                        System.out.print("Inserisci i posti totali: ");
+                        int postiTotaliEvento = scan.nextInt();
 
-        System.out.print("Minuti: ");
-        int minuti = scan.nextInt();
+                        nuovoEvento = new Evento(titoloEvento, parsedDataEvento, postiTotaliEvento);
 
-        LocalTime orario = LocalTime.of(ore, minuti);
+                        System.out.print("L'evento è un concerto (Y/N)? ");
+                        String isConcerto = scan.next().toUpperCase();
 
-        System.out.print("Posti a disposizione per l'evento: ");
-        int posti = scan.nextInt();
+                        if (isConcerto.equals("Y")) {
 
-        System.out.print("Prezzo del biglietto: ");
-        double prezzo = scan.nextDouble();
+                            System.out.print("Inserisci l'ora (HH:mm): ");
+                            String oraEvento = scan.next();
+                            LocalTime parsedOraEvento = LocalTime.parse(oraEvento);
 
-        Concerto nuovoConcerto = new Concerto(titolo, data, posti, orario, prezzo);
+                            System.out.print("Inserisci il prezzo del biglietto: ");
+                            int prezzoEvento = scan.nextInt();
 
-        System.out.print("Desideri effettuare delle prenotazioni?(Y/N) ");
-        String rispostaPrenotazioni = scan.next().toUpperCase();
+                            nuovoEvento = new Concerto(titoloEvento, parsedDataEvento, postiTotaliEvento,
+                                    parsedOraEvento, prezzoEvento);
+                        }
 
-        if (rispostaPrenotazioni.equals("Y")) {
-            System.out.print("Quanti posti desideri prenotare? ");
-            int postiPrenotazione = scan.nextInt();
-            nuovoConcerto.prenotaPosti(postiPrenotazione);
-        } else {
-            System.out.println("Nessun posto prenotato!");
+                        System.out.println("\nEvento creato con successo!\n" + nuovoEvento.toString());
+
+                    } catch (Exception ex) {
+
+                        System.err.println("\nERRORE: " + ex.getMessage()
+                            + "\nNon è stato possibile creare l'evento!");
+                    }
+                    break;
+
+                case 2:
+                    if (nuovoEvento != null) {
+                        try {
+                            
+                            System.out.println("\nPRENOTAZIONE POSTI");
+                            System.out.print("Quanti posti vuoi prenotare? ");
+                            int postiPrenotazione = scan.nextInt();
+    
+                            nuovoEvento.prenotaPosti(postiPrenotazione);
+                            System.out.println("\nPosti prenotati con successo!");
+    
+                        } catch (Exception ex) {
+    
+                            System.err.println("\nERRORE: " + ex.getMessage()
+                                + "\nNon è stato possibile prenotare i posti!");
+                        }
+                    } else {
+                        System.out.println("\nNessun evento in programma!");
+                    }
+                    break;
+
+                case 3:
+                    if (nuovoEvento != null) {
+                        try {
+                            
+                            System.out.println("\nDISDETTA POSTI");
+                            System.out.print("Quanti posti vuoi disdire? ");
+                            int postiDisdetta = scan.nextInt();
+    
+                            nuovoEvento.disdiciPosti(postiDisdetta);
+                            System.out.println("\nPosti disdetti con successo!");
+    
+                        } catch (Exception ex) {
+    
+                            System.err.println("\nERRORE: " + ex.getMessage()
+                                + "\nNon è stato possibile disdire i posti!");
+                        }
+                    } else {
+                        System.out.println("\nNessun evento in programma!");
+                    }
+                    break;
+
+                case 4:
+                    if (nuovoEvento != null) {
+                        System.out.println("\nDETTAGLI EVENTO\n"
+                            + nuovoEvento.toString()
+                            + "\nPosti prenotati " + nuovoEvento.getNumeroPostiRiservati()
+                            + "\nPosti disponibili " + nuovoEvento.getNumeroPostiDisponibili());
+                    } else {
+                        System.out.println("\nNessun evento in programma!");
+                    }
+                    break;
+
+                case 0: 
+                    System.out.println("\nESCO DAL PROGRAMMA"); 
+                    scan.close();
+                    return;
+
+                default:
+                System.out.println("\nOpzione non valida!");
+            }
         }
-
-        System.out.printf("Posti prenotati %s\nPosti disponibili %s\n",
-                nuovoConcerto.getNumeroPostiRiservati(),
-                nuovoConcerto.getNumeroPostiDisponibili());
-
-        System.out.print("Desideri disdire delle prenotazioni?(Y/N) ");
-        String rispostaDisdette = scan.next().toUpperCase();
-
-        if (rispostaDisdette.equals("Y")) {
-            System.out.print("Quanti prenotazioni desideri disdire? ");
-            int postiDisdette = scan.nextInt();
-            nuovoConcerto.prenotaPosti(postiDisdette);
-        } else {
-            System.out.println("Nessuna disdetta effettuata!");
-        }
-
-        System.out.printf("Posti prenotati %s\nPosti disponibili %s\n",
-                nuovoConcerto.getNumeroPostiRiservati(),
-                nuovoConcerto.getNumeroPostiDisponibili());
-
-        System.out.println(nuovoConcerto.toString());
-
-        scan.close();
-
     }
 
 }
