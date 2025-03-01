@@ -8,9 +8,12 @@ public class Main {
     public static void main(String[] args) {
 
         Scanner scan = new Scanner(System.in);
-        Evento nuovoEvento = null;
+        Evento evento = null;
 
+//ATTIVO UN CICLO WHILE(TRUE) COSICCHE IL PROGRAMMA CONTINUERA' A GIRARE FINCHE' L'UTENTE NON DECIDERA' DI CHIUDERLO
         while (true) {
+            
+            //MENU AZIONI PER CREARE E MANIPOLARE UN EVENTO
             System.out.println("\n*** GESTORE EVENTI ***");
             System.out.println("1. Crea un nuovo evento");
             System.out.println("2. Prenota un posto");
@@ -22,6 +25,7 @@ public class Main {
             int scelta = scan.nextInt();
 
             switch (scelta) {
+                //CASE PER LA CREAZIONE DELL'EVENTO
                 case 1:
                     try {
 
@@ -36,7 +40,7 @@ public class Main {
                         System.out.print("Inserisci i posti totali: ");
                         int postiTotaliEvento = scan.nextInt();
 
-                        nuovoEvento = new Evento(titoloEvento, parsedDataEvento, postiTotaliEvento);
+                        evento = new Evento(titoloEvento, parsedDataEvento, postiTotaliEvento);
 
                         System.out.print("L'evento è un concerto (Y/N)? ");
                         String isConcerto = scan.next().toUpperCase();
@@ -50,11 +54,11 @@ public class Main {
                             System.out.print("Inserisci il prezzo del biglietto: ");
                             int prezzoEvento = scan.nextInt();
 
-                            nuovoEvento = new Concerto(titoloEvento, parsedDataEvento, postiTotaliEvento,
+                            evento = new Concerto(titoloEvento, parsedDataEvento, postiTotaliEvento,
                                     parsedOraEvento, prezzoEvento);
                         }
 
-                        System.out.println("\nEvento creato con successo!\n" + nuovoEvento.toString());
+                        System.out.println("\nEvento creato con successo!\n" + evento.toString());
 
                     } catch (Exception ex) {
 
@@ -62,16 +66,16 @@ public class Main {
                             + "\nNon è stato possibile creare l'evento!");
                     }
                     break;
-
+                //CASE PER LA PRENOTAZIONE DI POSTI
                 case 2:
-                    if (nuovoEvento != null) {
+                    if (evento != null) {
                         try {
                             
                             System.out.println("\nPRENOTAZIONE POSTI");
                             System.out.print("Quanti posti vuoi prenotare? ");
                             int postiPrenotazione = scan.nextInt();
     
-                            nuovoEvento.prenotaPosti(postiPrenotazione);
+                            evento.prenotaPosti(postiPrenotazione);
                             System.out.println("\nPosti prenotati con successo!");
     
                         } catch (Exception ex) {
@@ -83,16 +87,16 @@ public class Main {
                         System.out.println("\nNessun evento in programma!");
                     }
                     break;
-
+                //CASE PER LA DISDETTA DI POSTI
                 case 3:
-                    if (nuovoEvento != null) {
+                    if (evento != null) {
                         try {
                             
                             System.out.println("\nDISDETTA POSTI");
                             System.out.print("Quanti posti vuoi disdire? ");
                             int postiDisdetta = scan.nextInt();
     
-                            nuovoEvento.disdiciPosti(postiDisdetta);
+                            evento.disdiciPosti(postiDisdetta);
                             System.out.println("\nPosti disdetti con successo!");
     
                         } catch (Exception ex) {
@@ -104,23 +108,23 @@ public class Main {
                         System.out.println("\nNessun evento in programma!");
                     }
                     break;
-
+                //CASE PER RICEVERE I DETTAGLI DELL'EVENTO
                 case 4:
-                    if (nuovoEvento != null) {
+                    if (evento != null) {
                         System.out.println("\nDETTAGLI EVENTO\n"
-                            + nuovoEvento.toString()
-                            + "\nPosti prenotati " + nuovoEvento.getNumeroPostiRiservati()
-                            + "\nPosti disponibili " + nuovoEvento.getNumeroPostiDisponibili());
+                            + evento.toString()
+                            + "\nPosti prenotati " + evento.getNumeroPostiRiservati()
+                            + "\nPosti disponibili " + evento.getNumeroPostiDisponibili());
                     } else {
                         System.out.println("\nNessun evento in programma!");
                     }
                     break;
-
+                //CASE PER CHIUDERE IL PROGRAMMA
                 case 0: 
                     System.out.println("\nESCO DAL PROGRAMMA"); 
                     scan.close();
                     return;
-
+                //DEFAULT CHE TI RIPORTA AL MENU OPZIONI
                 default:
                 System.out.println("\nOpzione non valida!");
             }

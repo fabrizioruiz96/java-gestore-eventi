@@ -2,8 +2,9 @@
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class Evento {
+public class Evento implements Comparable<Evento> {
 
+// DEFINISCO LE PROPRIETA' DELLA CLASSE
     private String titoloEvento;
     private LocalDate dataEvento;
     private final int numeroPostiTotali;
@@ -11,6 +12,7 @@ public class Evento {
 
     private static LocalDate now = LocalDate.now();
 
+//DEFINISCO IL COSTRUTTORE
     public Evento(String titolo, LocalDate data, int numeroPostiTotali) throws IllegalArgumentException {
         numeroPostiRiservati = 0;
         this.titoloEvento = titolo;
@@ -22,10 +24,12 @@ public class Evento {
         this.numeroPostiTotali = numeroPostiTotali;
     }
 
+//SEZIONE SETTER
     public void setTitolo(String titolo) {
         this.titoloEvento = titolo;
     }
 
+    //setter data con rispettivo controllo 
     public void setData(LocalDate data) throws IllegalArgumentException {
         if (data.isAfter(now)) {
             this.dataEvento = data;
@@ -34,6 +38,7 @@ public class Evento {
         }
     }
 
+//SEZIONE GETTER
     public String getTitolo() {
         return titoloEvento;
     }
@@ -55,6 +60,7 @@ public class Evento {
         return numeroPostiRiservati;
     }
 
+//SEZIONE METODI
     public void prenota() throws Exception {
         if (dataEvento.isBefore(now)) {
             throw new Exception("L'evento è già passato!");
@@ -104,4 +110,16 @@ public class Evento {
         return getDataFormattata() + " - " + titoloEvento;
     }
 
+    @Override
+    public int compareTo(Evento evento) {
+        if (this.dataEvento == evento.getData()) {
+            return 0;
+        } else if (this.dataEvento.isBefore(evento.getData())) {
+            return -1;
+        } else {
+            return +1;
+        }
+    }
+
+    
 }
