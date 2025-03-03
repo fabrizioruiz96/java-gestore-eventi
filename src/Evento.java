@@ -10,8 +10,6 @@ public class Evento implements Comparable<Evento> {
     private final int numeroPostiTotali;
     private int numeroPostiRiservati;
 
-    private static LocalDate now = LocalDate.now();
-
 //DEFINISCO IL COSTRUTTORE
     public Evento(String titolo, LocalDate data, int numeroPostiTotali) throws IllegalArgumentException {
         numeroPostiRiservati = 0;
@@ -31,7 +29,7 @@ public class Evento implements Comparable<Evento> {
 
     //setter data con rispettivo controllo 
     public void setData(LocalDate data) throws IllegalArgumentException {
-        if (data.isAfter(now)) {
+        if (data.isAfter(LocalDate.now())) {
             this.dataEvento = data;
         } else {
             throw new IllegalArgumentException("La data inserita non è valida!");
@@ -62,7 +60,7 @@ public class Evento implements Comparable<Evento> {
 
 //SEZIONE METODI
     public void prenota() throws Exception {
-        if (dataEvento.isBefore(now)) {
+        if (dataEvento.isBefore(LocalDate.now())) {
             throw new Exception("L'evento è già passato!");
         } else if (numeroPostiRiservati == numeroPostiTotali) {
             throw new Exception("L'evento è sold out!");
@@ -72,10 +70,12 @@ public class Evento implements Comparable<Evento> {
     }
 
     public void prenotaPosti(int numeroPrenotazioni) throws Exception {
-        if (dataEvento.isBefore(now)) {
+        if (dataEvento.isBefore(LocalDate.now())) {
             throw new Exception("L'evento è già passato!");
         } else if (numeroPostiRiservati == numeroPostiTotali) {
             throw new Exception("L'evento è sold out!");
+        } else if (numeroPrenotazioni <= 0) {
+            throw new Exception("Valore non accettabile!");
         } else if (numeroPrenotazioni > getNumeroPostiDisponibili()) {
             throw new Exception("Stai cercando di prenotare più posti di quelli disponibili!");
         }
@@ -84,7 +84,7 @@ public class Evento implements Comparable<Evento> {
     }
 
     public void disdici() throws Exception {
-        if (dataEvento.isBefore(now)) {
+        if (dataEvento.isBefore(LocalDate.now())) {
             throw new Exception("L'evento è già passato!");
         } else if (numeroPostiRiservati == 0) {
             throw new Exception("Non ci sono posti riservati!");
@@ -94,10 +94,12 @@ public class Evento implements Comparable<Evento> {
     }
 
     public void disdiciPosti(int numeroDisdette) throws Exception {
-        if (dataEvento.isBefore(now)) {
+        if (dataEvento.isBefore(LocalDate.now())) {
             throw new Exception("L'evento è già passato!");
         } else if (numeroPostiRiservati == 0) {
             throw new Exception("Non ci sono posti riservati!");
+        } else if (numeroDisdette <= 0) {
+            throw new Exception("Valore non accettabile!");
         } else if (numeroDisdette > numeroPostiRiservati) {
             throw new Exception("Stai cercando di disdire più posti di quelli che sono stati riservati!");
         }

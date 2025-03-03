@@ -9,7 +9,6 @@ public class Main {
 
         Scanner scan = new Scanner(System.in);
         Evento evento = null;
-        ProgrammaEventi programmaEventi = null;
 
 //ATTIVO UN CICLO WHILE(TRUE) COSICCHE IL PROGRAMMA CONTINUERA' A GIRARE FINCHE' L'UTENTE NON DECIDERA' DI CHIUDERLO
         while (true) {
