@@ -76,7 +76,9 @@ public class Evento implements Comparable<Evento> {
             throw new Exception("L'evento è già passato!");
         } else if (numeroPostiRiservati == numeroPostiTotali) {
             throw new Exception("L'evento è sold out!");
-        } 
+        } else if (numeroPrenotazioni > getNumeroPostiDisponibili()) {
+            throw new Exception("Stai cercando di prenotare più posti di quelli disponibili!");
+        }
 
         numeroPostiRiservati += numeroPrenotazioni;
     }
@@ -96,6 +98,8 @@ public class Evento implements Comparable<Evento> {
             throw new Exception("L'evento è già passato!");
         } else if (numeroPostiRiservati == 0) {
             throw new Exception("Non ci sono posti riservati!");
+        } else if (numeroDisdette > numeroPostiRiservati) {
+            throw new Exception("Stai cercando di disdire più posti di quelli che sono stati riservati!");
         }
 
         numeroPostiRiservati -= numeroDisdette;

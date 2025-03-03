@@ -9,6 +9,7 @@ public class Main {
 
         Scanner scan = new Scanner(System.in);
         Evento evento = null;
+        ProgrammaEventi programmaEventi = null;
 
 //ATTIVO UN CICLO WHILE(TRUE) COSICCHE IL PROGRAMMA CONTINUERA' A GIRARE FINCHE' L'UTENTE NON DECIDERA' DI CHIUDERLO
         while (true) {
@@ -23,6 +24,7 @@ public class Main {
 
             System.out.print("\nScegli un'opzione: ");
             int scelta = scan.nextInt();
+            scan.nextLine();
 
             switch (scelta) {
                 //CASE PER LA CREAZIONE DELL'EVENTO
@@ -31,10 +33,10 @@ public class Main {
 
                         System.out.println("\nCREA UN NUOVO EVENTO!");
                         System.out.print("Inserisci il titolo dell'evento: ");
-                        String titoloEvento = scan.next();
+                        String titoloEvento = scan.nextLine();
 
                         System.out.print("Inserisci la data (yyyy-MM-dd): ");
-                        String dataEvento = scan.next();
+                        String dataEvento = scan.nextLine();
                         LocalDate parsedDataEvento = LocalDate.parse(dataEvento);
 
                         System.out.print("Inserisci i posti totali: ");

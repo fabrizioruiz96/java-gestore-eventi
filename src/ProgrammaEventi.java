@@ -32,11 +32,12 @@ public class ProgrammaEventi {
         eventi.add(evento);
     }
 
-    public List<Evento> getEventiOnData(LocalDate data) {
+    public List<Evento> getEventiOnData(String dataString) {
+        LocalDate data = LocalDate.parse(dataString);
         List<Evento> eventiOnData = new ArrayList<>();
         
         for (int idx = 0; idx < eventi.size(); idx++) {
-            if (eventi.get(idx).getData() == data) {
+            if (eventi.get(idx).getData().equals(data)) {
                 eventiOnData.add(eventi.get(idx));
             }
         }
@@ -54,6 +55,12 @@ public class ProgrammaEventi {
 
     public String getListaOrdinata() {
         Collections.sort(eventi);
-        return getTitolo() + ":" + eventi;
+        String listaOrdinata = getTitolo() + ":";
+
+        for (Evento evento : eventi) {
+            listaOrdinata += "\n- " + evento.toString();
+        }
+
+        return listaOrdinata;
     }
 }
